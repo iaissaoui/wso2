@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <api context="/exchange" name="ExchangeRates" xmlns="http://ws.apache.org/ns/synapse">
-    <resource methods="POST" url-mapping="/rate">
+    <resource methods="POST GET" url-mapping="/hello">
         <inSequence>
-            <log description="My Hello World Message" level="custom" separator=" ### ">
-                <property name="Greeting" value="Hello World!"/>
+            <log level="custom" separator=" ### ">
+                <property name="Started Service" value="/hello"/>
             </log>
-            <log level="full"/>
+            <log level="full" separator=" ### ">
+                <property name="Full LOGs" value="This is a full log property test"/>
+            </log>
+            <log level="custom" separator=" ### ">
+                <property name="Ended Service" value="/hello"/>
+            </log>
             <respond/>
         </inSequence>
         <outSequence/>
