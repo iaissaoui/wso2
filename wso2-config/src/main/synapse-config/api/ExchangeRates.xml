@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/exchange" name="ExchangeRates" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="POST" url-mapping="/rate">
+        <inSequence>
+            <log description="My Hello World Message" level="custom" separator=" ### ">
+                <property name="Greeting" value="Hello World!"/>
+            </log>
+            <log level="full"/>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>
