@@ -51,9 +51,22 @@
         </outSequence>
         <faultSequence/>
     </resource>
-    <resource methods="POST" url-mapping="/nasdaq">
-        <inSequence/>
-        <outSequence/>
-        <faultSequence/>
+    <resource methods="POST" url-mapping="/helloxml">
+        <inSequence>
+            <log level="full">
+                <property name="At" value="In-Sequence"/>
+            </log>
+            <loopback/>
+        </inSequence>
+        <outSequence>
+            <datamapper config="gov:datamapper/json-to-xml.dmc" inputSchema="gov:datamapper/json-to-xml_inputSchema.json" inputType="JSON" outputSchema="gov:datamapper/json-to-xml_outputSchema.json" outputType="XML" xsltStyleSheet="gov:datamapper/json-to-xml_xsltStyleSheet.xml"/>
+            <log level="full"/>
+            <respond/>
+        </outSequence>
+        <faultSequence>
+            <log level="full">
+                <property name="At" value="Fault"/>
+            </log>
+        </faultSequence>
     </resource>
 </api>
