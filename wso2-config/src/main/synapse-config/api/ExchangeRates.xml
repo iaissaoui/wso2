@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<api context="/exchange" name="ExchangeRates" xmlns="http://ws.apache.org/ns/synapse">
+<api context="/api" name="api" xmlns="http://ws.apache.org/ns/synapse">
     <resource methods="GET" url-mapping="/hello">
         <inSequence>
             <log description="Start" level="custom" separator=" ### ">
@@ -20,29 +20,40 @@
                 <property name="Started Service on POST" value="/hello"/>
             </log>
             <log description="Full" level="full"/>
-            <log description="IN PAYLOAD" level="custom">
-                <property expression="json-eval($)" name="IN PAYLOAD"/>
+            <log description="in-logs" level="custom">
+                <property expression="json-eval($)" name="in-sequence"/>
             </log>
             <loopback/>
         </inSequence>
         <outSequence>
-            <payloadFactory media-type="json">
-                <format>{&#xd;
-	"name": "$1"&#xd;
-	"status": "OK"	&#xd;
-}</format>
-                <args>
-                    <arg evaluator="json" expression="$.name"/>
-                </args>
-            </payloadFactory>
-            <log description="OUT PAYLOAD" level="custom">
-                <property expression="json-eval($)" name="OUT PAYLOAD"/>
-            </log>
+            <property expression="json-eval($.name)" name="name" scope="default" type="STRING"/>
             <log level="custom">
-                <property name="IN OUT-SEQUENCE" value="TRUE"/>
+                <property expression="get-property('name')" name="prop 1"/>
             </log>
+            <property expression="fn:concat('{&quot;message&quot; : &quot;Hello ' , get-property('name'), '!&quot;}' )" name="message" scope="default" type="STRING"/>
+            <log level="custom">
+                <property expression="get-property('message')" name="prop 2"/>
+            </log>
+            <enrich>
+                <source clone="true" type="inline">{&#xd;
+	"dummy": "dummy"&#xd;
+}</source>
+                <target action="child" xpath="json-eval($.)"/>
+            </enrich>
+            <enrich description="">
+                <source clone="true" property="message" type="property"/>
+                <target action="child" xpath="json-eval($.)"/>
+            </enrich>
+            <!--             <log description="out-logs" level="custom"> -->
+            <!--                 <property expression="json-eval($)" name="out-sequence"/> -->
+            <!--             </log> -->
             <respond/>
         </outSequence>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" url-mapping="/nasdaq">
+        <inSequence/>
+        <outSequence/>
         <faultSequence/>
     </resource>
 </api>
