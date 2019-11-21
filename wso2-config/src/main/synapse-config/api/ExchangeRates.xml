@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <api context="/exchange" name="ExchangeRates" xmlns="http://ws.apache.org/ns/synapse">
-    <resource methods="POST GET" url-mapping="/hello">
+    <resource methods="GET" url-mapping="/hello">
         <inSequence>
-            <log level="custom" separator=" ### ">
-                <property name="Started Service" value="/hello"/>
+            <log description="Start" level="custom" separator=" ### ">
+                <property name="Started Service on GET" value="/hello"/>
             </log>
-            <log level="full" separator=" ### ">
-                <property name="Full LOGs" value="This is a full log property test"/>
-            </log>
-            <log level="custom" separator=" ### ">
+            <log description="Full" level="full" separator=" ### "/>
+            <log description="End" level="custom" separator=" ### ">
                 <property name="Ended Service" value="/hello"/>
             </log>
             <respond/>
         </inSequence>
         <outSequence/>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" url-mapping="/hello">
+        <inSequence>
+            <log description="Start" level="custom" separator="@@@">
+                <property name="Started Service on POST" value="/hello"/>
+            </log>
+            <log description="Full" level="full"/>
+            <log description="IN PAYLOAD" level="custom">
+                <property expression="json-eval($)" name="IN PAYLOAD"/>
+            </log>
+            <loopback/>
+        </inSequence>
+        <outSequence>
+            <payloadFactory media-type="json">
+                <format>{&#xd;
+	"name": "$1"&#xd;
+	"status": "OK"	&#xd;
+}</format>
+                <args>
+                    <arg evaluator="json" expression="$.name"/>
+                </args>
+            </payloadFactory>
+            <log description="OUT PAYLOAD" level="custom">
+                <property expression="json-eval($)" name="OUT PAYLOAD"/>
+            </log>
+            <log level="custom">
+                <property name="IN OUT-SEQUENCE" value="TRUE"/>
+            </log>
+            <respond/>
+        </outSequence>
         <faultSequence/>
     </resource>
 </api>
