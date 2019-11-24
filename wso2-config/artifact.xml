@@ -5,4 +5,7 @@
     <artifact name="ExchangeRatesBackendService" groupId="com.example.wso2-config.endpoint" version="1.0.0" type="synapse/endpoint" serverRole="EnterpriseServiceBus">
         <file>src/main/synapse-config/endpoints/ExchangeRatesBackendService.xml</file>
     </artifact>
+    <artifact name="StocksQuotes" groupId="com.example.wso2-config.endpoint" version="1.0.0" type="synapse/endpoint" serverRole="EnterpriseServiceBus">
+        <file>src/main/synapse-config/endpoints/StocksQuotes.xml</file>
+    </artifact>
 </artifacts>

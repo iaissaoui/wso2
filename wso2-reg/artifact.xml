@@ -27,4 +27,11 @@
             <mediaType>text/plain</mediaType>
         </item>
     </artifact>
+    <artifact name="json-validator-iqbal" groupId="com.example.wso2-config.resource" version="1.0.0" type="registry/resource" serverRole="EnterpriseServiceBus">
+        <item>
+            <file>json-validator-iqbal.json</file>
+            <path>/_system/config/myresources</path>
+            <mediaType>application/json</mediaType>
+        </item>
+    </artifact>
 </artifacts>

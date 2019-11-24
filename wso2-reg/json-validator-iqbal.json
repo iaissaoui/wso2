@@ -1,0 +1,33 @@
+ {
+   "definitions": {},
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "$id": "http://example.com/root.json",
+   "type": "object",
+   "title": "The Root Schema",
+   "required": [
+     "company",
+     "stockexchange"
+   ],
+   "properties": {
+     "company": {
+       "$id": "#/properties/company",
+       "type": "string",
+       "title": "The Company Schema",
+       "default": "",
+       "examples": [
+         "Apple"
+       ],
+       "pattern": "^(.*)$"
+     },
+     "stockexchange": {
+       "$id": "#/properties/stockexchange",
+       "type": "string",
+       "title": "The Stockexchange Schema",
+       "default": "",
+       "examples": [
+         "NSDQ"
+       ],
+       "pattern": "^(.*)$"
+     }
+   }
+ }

@@ -35,18 +35,20 @@
                 <property expression="get-property('message')" name="prop 2"/>
             </log>
             <enrich>
-                <source clone="true" type="inline">{&#xd;
-	"dummy": "dummy"&#xd;
-}</source>
-                <target action="child" xpath="json-eval($.)"/>
+                <source clone="true" type="inline">
+					{&#xd;
+					"dummy": "dummy"&#xd;
+					}
+				</source>
+                <target action="child" xpath="json-eval($)"/>
             </enrich>
             <enrich description="">
                 <source clone="true" property="message" type="property"/>
-                <target action="child" xpath="json-eval($.)"/>
+                <target action="child" xpath="json-eval($)"/>
             </enrich>
-            <!--             <log description="out-logs" level="custom"> -->
-            <!--                 <property expression="json-eval($)" name="out-sequence"/> -->
-            <!--             </log> -->
+            <!-- <log description="out-logs" level="custom"> -->
+            <!-- <property expression="json-eval($)" name="out-sequence"/> -->
+            <!-- </log> -->
             <respond/>
         </outSequence>
         <faultSequence/>
@@ -67,6 +69,69 @@
             <log level="full">
                 <property name="At" value="Fault"/>
             </log>
+        </faultSequence>
+    </resource>
+    <resource methods="POST" url-mapping="/stocks">
+        <inSequence>
+            <log>
+                <property name="IN 1" value="TRUE"/>
+            </log>
+            <validate cache-schema="true" source="json-eval($)">
+                <schema key="conf:myresources/json-validator-iqbal.json"/>
+                <on-fail>
+                    <payloadFactory media-type="json">
+                        <format>
+							{"Error":"$1"}
+						</format>
+                        <args>
+                            <arg evaluator="xml" expression="$ctx:ERROR_MESSAGE"/>
+                        </args>
+                    </payloadFactory>
+                    <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+                    <respond/>
+                </on-fail>
+            </validate>
+            <log>
+                <property name="IN 2" value="TRUE"/>
+            </log>
+            <!--       
+
+
+            <filter xpath="json-eval($)">
+                <then/>
+                <else/>
+            </filter>
+            <log>
+                <property name="IN 3" value="TRUE"/>
+            </log>
+            <switch source="json-eval($)">
+                <case regex="Apple"/>
+                <case regex="Microsoft"/>
+                <default/>
+            </switch>
+            <log>
+                <property name="IN 4" value="TRUE"/>
+            </log>
+            <send>
+                <endpoint key="StocksQuotes"/>
+            </send>
+       
+
+
+-->
+            <loopback/>
+        </inSequence>
+        <outSequence>
+            <log>
+                <property name="IN OUT SEQUENCE" value="TRUE"/>
+            </log>
+            <respond/>
+        </outSequence>
+        <faultSequence>
+            <log level="full">
+                <property name="IN FAULT" value="TRUE"/>
+            </log>
+            <respond/>
         </faultSequence>
     </resource>
 </api>

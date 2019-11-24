@@ -15,13 +15,15 @@
   <name>wso2-configCompositeApplication</name>
   <description>wso2-configCompositeApplication</description>
   <properties>
-    <com.example.wso2-config.endpoint_._ExchangeRatesBackendService>capp/EnterpriseServiceBus</com.example.wso2-config.endpoint_._ExchangeRatesBackendService>
+    <artifact.types>jaggery/app=zip,synapse/priority-executor=xml,synapse/inbound-endpoint=xml,service/rule=aar,synapse/message-store=xml,event/stream=json,service/meta=xml,datasource/datasource=xml,synapse/proxy-service=xml,bpel/workflow=zip,synapse/sequence=xml,synapse/endpointTemplate=xml,carbon/application=car,wso2/gadget=dar,synapse/api=xml,synapse/event-source=xml,synapse/message-processors=xml,event/receiver=xml,lib/dataservice/validator=jar,synapse/template=xml,synapse/endpoint=xml,lib/carbon/ui=jar,lib/synapse/mediator=jar,event/publisher=xml,synapse/local-entry=xml,synapse/task=xml,webapp/jaxws=war,registry/resource=zip,synapse/configuration=xml,service/axis2=aar,synapse/lib=zip,synapse/sequenceTemplate=xml,event/execution-plan=siddhiql,service/dataservice=dbs,web/application=war,lib/library/bundle=jar</artifact.types>
     <com.example.wso2-config.resource_._json-to-xml_outputSchema>capp/EnterpriseServiceBus</com.example.wso2-config.resource_._json-to-xml_outputSchema>
-    <com.example.wso2-config.resource_._json-to-xml_inputSchema>capp/EnterpriseServiceBus</com.example.wso2-config.resource_._json-to-xml_inputSchema>
-    <com.example.wso2-config.resource_._json-to-xml>capp/EnterpriseServiceBus</com.example.wso2-config.resource_._json-to-xml>
     <com.example.wso2-config.resource_._json-to-xml_xsltStyleSheet>capp/EnterpriseServiceBus</com.example.wso2-config.resource_._json-to-xml_xsltStyleSheet>
+    <com.example.wso2-config.resource_._json-to-xml>capp/EnterpriseServiceBus</com.example.wso2-config.resource_._json-to-xml>
+    <com.example.wso2-config.resource_._json-to-xml_inputSchema>capp/EnterpriseServiceBus</com.example.wso2-config.resource_._json-to-xml_inputSchema>
+    <com.example.wso2-config.endpoint_._StocksQuotes>capp/EnterpriseServiceBus</com.example.wso2-config.endpoint_._StocksQuotes>
+    <com.example.wso2-config.endpoint_._ExchangeRatesBackendService>capp/EnterpriseServiceBus</com.example.wso2-config.endpoint_._ExchangeRatesBackendService>
     <com.example.wso2-config.api_._ExchangeRates>capp/EnterpriseServiceBus</com.example.wso2-config.api_._ExchangeRates>
-    <artifact.types>synapse/priority-executor=xml,jaggery/app=zip,synapse/inbound-endpoint=xml,service/rule=aar,synapse/message-store=xml,service/meta=xml,event/stream=json,datasource/datasource=xml,synapse/proxy-service=xml,synapse/sequence=xml,bpel/workflow=zip,synapse/endpointTemplate=xml,carbon/application=car,synapse/api=xml,wso2/gadget=dar,synapse/event-source=xml,synapse/message-processors=xml,event/receiver=xml,lib/dataservice/validator=jar,synapse/template=xml,synapse/endpoint=xml,lib/carbon/ui=jar,lib/synapse/mediator=jar,synapse/local-entry=xml,synapse/task=xml,event/publisher=xml,synapse/configuration=xml,webapp/jaxws=war,registry/resource=zip,service/axis2=aar,synapse/lib=zip,synapse/sequenceTemplate=xml,event/execution-plan=siddhiql,service/dataservice=dbs,web/application=war,lib/library/bundle=jar</artifact.types>
+    <com.example.wso2-config.resource_._json-validator-iqbal>capp/EnterpriseServiceBus</com.example.wso2-config.resource_._json-validator-iqbal>
   </properties>
   <dependencies>
     <dependency>
@@ -33,6 +35,12 @@
     <dependency>
       <groupId>com.example.wso2-config.endpoint</groupId>
       <artifactId>ExchangeRatesBackendService</artifactId>
+      <version>1.0.0</version>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>com.example.wso2-config.endpoint</groupId>
+      <artifactId>StocksQuotes</artifactId>
       <version>1.0.0</version>
       <type>xml</type>
     </dependency>
@@ -57,6 +65,12 @@
     <dependency>
       <groupId>com.example.wso2-config.resource</groupId>
       <artifactId>json-to-xml_xsltStyleSheet</artifactId>
+      <version>1.0.0</version>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>com.example.wso2-config.resource</groupId>
+      <artifactId>json-validator-iqbal</artifactId>
       <version>1.0.0</version>
       <type>zip</type>
     </dependency>
