@@ -124,8 +124,8 @@
                             </log>
                             <makefault version="soap11">
                                 <code value="soap11Env:VersionMismatch" xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"/>
-                                <reason value="Only companies allowed are Apple &amp; Microsoft"/>
-                                <detail>Switch Default</detail>
+                                <reason value="Switch Default Case"/>
+                                <detail>Only values allowed are "Apple" &amp; "Microsoft"</detail>
                             </makefault>
                             <respond/>
                         </default>
@@ -135,20 +135,15 @@
                     </log>
                     <payloadFactory media-type="xml">
                         <format>
-                            <payloadFactory media-type="xml" xmlns="">
-                                <format>
-                                    <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://www.gama-system.com/webservices">
-                                        <soap:Header/>
-                                        <soap:Body>
-                                            <web:GetLatestStockValue>
-                                                <web:strStockExchange>$1</web:strStockExchange>
-                                                <web:strStock>$2</web:strStock>
-                                            </web:GetLatestStockValue>
-                                        </soap:Body>
-                                    </soap:Envelope>
-                                </format>
-                                <args/>
-                            </payloadFactory>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://www.gama-system.com/webservices">
+                                <soap:Header/>
+                                <soap:Body>
+                                    <web:GetLatestStockValue>
+                                        <web:strStockExchange>$1</web:strStockExchange>
+                                        <web:strStock>$2</web:strStock>
+                                    </web:GetLatestStockValue>
+                                </soap:Body>
+                            </soap:Envelope>
                         </format>
                         <args>
                             <arg evaluator="json" expression="$.stockexchange"/>
@@ -200,6 +195,13 @@
             <loopback/>
         </inSequence>
         <outSequence>
+            <!--             <payloadFactory media-type="json"> -->
+            <!--                 <format> {"stockvalue" : "$1" }</format> -->
+            <!--                 <args> -->
+            <!--                     <arg evaluator="xml" expression="//GetLatestStockValueResult"/> -->
+            <!--                 </args> -->
+            <!--             </payloadFactory> -->
+            <property name="messageType" scope="axis2" type="STRING" value="application/json"/>
             <log level="full">
                 <property name="OUT SEQUENCE" value="TRUE"/>
             </log>
