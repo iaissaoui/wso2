@@ -81,11 +81,9 @@
                 <on-fail>
                     <payloadFactory media-type="json">
                         <format>
-							{"Error":"$1"}
+							{"Error":"JSON validation failed, check format"}
 						</format>
-                        <args>
-                            <arg evaluator="xml" expression="$ctx:ERROR_MESSAGE"/>
-                        </args>
+                        <args/>
                     </payloadFactory>
                     <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
                     <respond/>
@@ -94,16 +92,96 @@
             <log>
                 <property name="IN 2" value="TRUE"/>
             </log>
-            <!--       
-
-
-            <filter xpath="json-eval($)">
-                <then/>
-                <else/>
+            <filter regex="NSDQ" source="json-eval($.stockexchange)">
+                <then>
+                    <log>
+                        <property name="Filter" value="OK"/>
+                    </log>
+                    <switch source="json-eval($.company)">
+                        <case regex="Apple">
+                            <log>
+                                <property name="CASE APPLE" value="TRUE"/>
+                            </log>
+                            <enrich>
+                                <source clone="true" type="inline">{ "company":"AAPL" , "stockexchange":"NASDAQ"}</source>
+                                <target type="body"/>
+                            </enrich>
+                            <log level="full"/>
+                        </case>
+                        <case regex="Microsoft">
+                            <log>
+                                <property name="CASE MS" value="TRUE"/>
+                            </log>
+                            <enrich>
+                                <source clone="true" type="inline">{ "company":"MSFT" , "stockexchange":"NASDAQ"}</source>
+                                <target type="body"/>
+                            </enrich>
+                            <log level="full"/>
+                        </case>
+                        <default>
+                            <log>
+                                <property name="Switch FAIL" value="TRUE"/>
+                            </log>
+                            <makefault version="soap11">
+                                <code value="soap11Env:VersionMismatch" xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"/>
+                                <reason value="Only companies allowed are Apple &amp; Microsoft"/>
+                                <detail>Switch Default</detail>
+                            </makefault>
+                            <respond/>
+                        </default>
+                    </switch>
+                    <log>
+                        <property name="OUT OF SWITCH" value="TRUE"/>
+                    </log>
+                    <payloadFactory media-type="xml">
+                        <format>
+                            <payloadFactory media-type="xml" xmlns="">
+                                <format>
+                                    <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://www.gama-system.com/webservices">
+                                        <soap:Header/>
+                                        <soap:Body>
+                                            <web:GetLatestStockValue>
+                                                <web:strStockExchange>$1</web:strStockExchange>
+                                                <web:strStock>$2</web:strStock>
+                                            </web:GetLatestStockValue>
+                                        </soap:Body>
+                                    </soap:Envelope>
+                                </format>
+                                <args/>
+                            </payloadFactory>
+                        </format>
+                        <args>
+                            <arg evaluator="json" expression="$.stockexchange"/>
+                            <arg evaluator="json" expression="$.company"/>
+                        </args>
+                    </payloadFactory>
+                    <header name="Action" scope="default" value="http://www.gama-system.com/webservices/GetLatestStockValue"/>
+                    <log level="full">
+                        <property name="AFTER HEADER" value="TRUE"/>
+                    </log>
+                    <send>
+                        <endpoint key="StocksQuotes"/>
+                    </send>
+                </then>
+                <else>
+                    <log>
+                        <property name="Filter" value="NOK"/>
+                    </log>
+                    <makefault version="soap11">
+                        <code value="soap11Env:VersionMismatch" xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"/>
+                        <reason value="Filter Fault"/>
+                        <detail>Only Stock Exchange value allowed is NSDQ</detail>
+                    </makefault>
+                    <respond/>
+                </else>
             </filter>
             <log>
                 <property name="IN 3" value="TRUE"/>
             </log>
+            <!--       
+
+
+
             <switch source="json-eval($)">
                 <case regex="Apple"/>
                 <case regex="Microsoft"/>
@@ -122,14 +200,14 @@
             <loopback/>
         </inSequence>
         <outSequence>
-            <log>
-                <property name="IN OUT SEQUENCE" value="TRUE"/>
+            <log level="full">
+                <property name="OUT SEQUENCE" value="TRUE"/>
             </log>
-            <respond/>
+            <send/>
         </outSequence>
         <faultSequence>
             <log level="full">
-                <property name="IN FAULT" value="TRUE"/>
+                <property name="ERROR SEQUENCE" value="TRUE"/>
             </log>
             <respond/>
         </faultSequence>

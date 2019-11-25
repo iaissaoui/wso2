@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <endpoint name="StocksQuotes" xmlns="http://ws.apache.org/ns/synapse">
-    <address uri="http://webservices.gama-system.com/stockquotes.asmx">
+    <address format="soap11" uri="http://webservices.gama-system.com/stockquotes.asmx">
         <suspendOnFailure>
             <initialDuration>-1</initialDuration>
             <progressionFactor>1.0</progressionFactor>
