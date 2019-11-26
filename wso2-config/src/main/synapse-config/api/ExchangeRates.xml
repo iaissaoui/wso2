@@ -214,4 +214,73 @@
             <respond/>
         </faultSequence>
     </resource>
+    <resource methods="GET" url-mapping="/stocks">
+        <inSequence>
+            <log/>
+            <clone id="IA101">
+                <target>
+                    <sequence>
+                        <payloadFactory media-type="xml">
+                            <format>
+                                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.gama-system.com/webservices">
+                                    <soapenv:Header/>
+                                    <soapenv:Body>
+                                        <web:GetLatestStockValue>
+                                            <web:strStockExchange>NASDAQ</web:strStockExchange>
+                                            <web:strStock>AAPL</web:strStock>
+                                        </web:GetLatestStockValue>
+                                    </soapenv:Body>
+                                </soapenv:Envelope>
+                            </format>
+                            <args/>
+                        </payloadFactory>
+                        <log level="custom">
+                            <property name="AAPL" value="AAPL"/>
+                        </log>
+                        <send>
+                            <endpoint key="StocksQuotes"/>
+                        </send>
+                    </sequence>
+                </target>
+                <target>
+                    <sequence>
+                        <payloadFactory media-type="xml">
+                            <format>
+                                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://www.gama-system.com/webservices">
+                                    <soapenv:Header/>
+                                    <soapenv:Body>
+                                        <web:GetLatestStockValue>
+                                            <web:strStockExchange>NASDAQ</web:strStockExchange>
+                                            <web:strStock>MSFT</web:strStock>
+                                        </web:GetLatestStockValue>
+                                    </soapenv:Body>
+                                </soapenv:Envelope>
+                            </format>
+                            <args/>
+                        </payloadFactory>
+                        <log level="custom">
+                            <property name="MSFT" value="MSFT"/>
+                        </log>
+                        <send>
+                            <endpoint key="StocksQuotes"/>
+                        </send>
+                    </sequence>
+                </target>
+            </clone>
+        </inSequence>
+        <outSequence>
+            <log level="full">
+                <property name="OUT SEQ" value="OUT SEQ"/>
+            </log>
+            <aggregate id="IA101">
+                <completeCondition>
+                    <messageCount max="-1" min="-1"/>
+                </completeCondition>
+                <onComplete expression="$body/*[1]">
+                    <send/>
+                </onComplete>
+            </aggregate>
+        </outSequence>
+        <faultSequence/>
+    </resource>
 </api>
